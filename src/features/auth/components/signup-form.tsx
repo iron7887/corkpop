@@ -61,14 +61,14 @@ const nicknameHelperText = (status: AvailabilityStatus) =>
 
 const availabilityHelperClassName = (status: AvailabilityStatus) => {
   if (status === 'available') {
-    return 'text-emerald-700';
+    return 'text-primary';
   }
 
   if (status === 'unavailable') {
-    return 'text-rose-700';
+    return 'text-primary';
   }
 
-  return 'text-stone-500';
+  return 'text-muted-foreground';
 };
 
 export function SignupForm() {
@@ -158,14 +158,14 @@ export function SignupForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-stone-700">이메일</FormLabel>
+              <FormLabel className="text-foreground">이메일</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="email"
                   autoComplete="email"
                   placeholder="name@example.com"
-                  className="rounded-xl border-stone-200 bg-white"
+                  className="rounded-xl border-border bg-card"
                 />
               </FormControl>
               <FormDescription className={availabilityHelperClassName(emailStatus)}>
@@ -181,13 +181,13 @@ export function SignupForm() {
           name="nickname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-stone-700">닉네임</FormLabel>
+              <FormLabel className="text-foreground">닉네임</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   autoComplete="nickname"
                   placeholder="와인러버42"
-                  className="rounded-xl border-stone-200 bg-white"
+                  className="rounded-xl border-border bg-card"
                 />
               </FormControl>
               <FormDescription className={availabilityHelperClassName(nicknameStatus)}>
@@ -203,17 +203,17 @@ export function SignupForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-stone-700">비밀번호</FormLabel>
+              <FormLabel className="text-foreground">비밀번호</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="password"
                   autoComplete="new-password"
                   placeholder="8자 이상, 숫자·특수문자 포함"
-                  className="rounded-xl border-stone-200 bg-white"
+                  className="rounded-xl border-border bg-card"
                 />
               </FormControl>
-              <FormDescription className="text-stone-500">
+              <FormDescription className="text-muted-foreground">
                 최소 8자, 숫자와 특수문자를 각각 1개 이상 포함해야 합니다.
               </FormDescription>
               <FormMessage />
@@ -226,14 +226,14 @@ export function SignupForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-stone-700">비밀번호 확인</FormLabel>
+              <FormLabel className="text-foreground">비밀번호 확인</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="password"
                   autoComplete="new-password"
                   placeholder="비밀번호를 다시 입력해 주세요"
-                  className="rounded-xl border-stone-200 bg-white"
+                  className="rounded-xl border-border bg-card"
                 />
               </FormControl>
               <FormMessage />
@@ -242,7 +242,7 @@ export function SignupForm() {
         />
 
         {submitError ? (
-          <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-800" role="alert">
+          <p className="rounded-xl bg-accent px-4 py-3 text-sm text-primary" role="alert">
             {submitError}
           </p>
         ) : null}
@@ -250,7 +250,7 @@ export function SignupForm() {
         <Button
           type="submit"
           disabled={isSubmitDisabled}
-          className="w-full rounded-2xl bg-rose-700 text-white hover:bg-rose-800 disabled:opacity-50"
+          className="w-full rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
           {isSubmitting ? (
             <>
@@ -262,11 +262,11 @@ export function SignupForm() {
           )}
         </Button>
 
-        <p className="text-center text-sm text-stone-600">
+        <p className="text-center text-sm text-muted-foreground">
           이미 계정이 있으신가요?{' '}
           <Link
             href="/login"
-            className="font-semibold text-rose-700 underline-offset-4 hover:underline"
+            className="font-semibold text-primary underline-offset-4 hover:underline"
           >
             로그인
           </Link>

@@ -18,10 +18,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Corkpop - POP your Wine',
-    template: 'Corkpop - POP your Wine',
+    default: 'Cork Pop! Your Wine & Make History',
+    template: 'Cork Pop! Your Wine & Make History',
   },
   description: '와인 취향 설문 기반 추천 서비스',
+  icons: {
+    icon: '/myimg/favicon-wr.png',
+    shortcut: '/myimg/favicon-wr.png',
+    apple: '/myimg/favicon-wr.png',
+  },
 };
 
 export default function RootLayout({

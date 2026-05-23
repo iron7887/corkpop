@@ -13,7 +13,26 @@ const config = {
       },
     },
     extend: {
+      spacing: {
+        'section-3': '0.975rem',
+        'section-4': '1.3rem',
+        'section-5': '1.625rem',
+        'section-6': '1.95rem',
+        'section-8': '2.6rem',
+        'section-10': '3.25rem',
+        'section-12': '3.9rem',
+        'section-14': '4.55rem',
+      },
+      maxWidth: {
+        page: '1400px',
+      },
       colors: {
+        brand: {
+          cream: '#FCF7F1',
+          sand: '#F3E9DA',
+          ink: '#222222',
+          wine: '#5A1F1F',
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

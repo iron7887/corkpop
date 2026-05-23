@@ -119,10 +119,10 @@ export default function HistoryPage() {
   };
 
   return (
-    <main className="min-h-screen bg-stone-50 px-5 py-12 text-stone-800 md:px-8">
-      <section className="mx-auto w-full max-w-6xl rounded-3xl border border-rose-100 bg-white p-6 shadow-sm md:p-8">
+    <main className="min-h-screen bg-background px-5 py-section-12 text-foreground md:px-8">
+      <section className="mx-auto w-full max-w-page rounded-3xl border border-primary/20 bg-card p-6 shadow-sm md:p-8">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-rose-900">이전 추천기록 전체보기</h1>
+          <h1 className="text-2xl font-bold text-primary">이전 추천기록 전체보기</h1>
           <Button
             type="button"
             variant="outline"
@@ -134,11 +134,11 @@ export default function HistoryPage() {
           </Button>
         </div>
 
-        {isLoading && <p className="text-sm text-stone-500">기록을 불러오는 중입니다...</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">기록을 불러오는 중입니다...</p>}
 
         {!isLoading && history.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-stone-200 bg-stone-50/90 p-6 text-center">
-            <p className="text-sm text-stone-500">저장된 추천기록이 없습니다.</p>
+          <div className="rounded-2xl border border-dashed border-border bg-muted/90 p-6 text-center">
+            <p className="text-sm text-muted-foreground">저장된 추천기록이 없습니다.</p>
           </div>
         )}
 
@@ -147,7 +147,7 @@ export default function HistoryPage() {
             {history.map((item) => (
               <article
                 key={item.id}
-                className="group relative isolate overflow-hidden rounded-xl border border-rose-100 p-4 shadow-sm transition hover:border-rose-200"
+                className="group relative isolate overflow-hidden rounded-xl border border-primary/20 p-4 shadow-sm transition hover:border-primary/30"
               >
                 <div
                   className="pointer-events-none absolute inset-0 -z-20 scale-105 bg-cover bg-center transition duration-500 group-hover:scale-110"
@@ -156,23 +156,23 @@ export default function HistoryPage() {
                   }}
                   aria-hidden
                 />
-                <div className="pointer-events-none absolute inset-0 -z-10 bg-white/70" aria-hidden />
+                <div className="pointer-events-none absolute inset-0 -z-10 bg-card/70" aria-hidden />
                 <Link href={`/history/${item.id}`} className="block">
-                  <p className="line-clamp-2 text-sm font-semibold text-rose-900 drop-shadow-sm">
+                  <p className="line-clamp-2 text-sm font-semibold text-primary drop-shadow-sm">
                     {item.recommended_type}
                   </p>
-                  <p className="mt-1 line-clamp-2 text-sm text-stone-800">
+                  <p className="mt-1 line-clamp-2 text-sm text-foreground">
                     추천 품종: {formatRankedGrapesSummary(item.recommended_grapes)}
                   </p>
                   {item.score_snapshot?.summary && (
-                    <p className="mt-2 line-clamp-3 text-sm text-stone-800">
+                    <p className="mt-2 line-clamp-3 text-sm text-foreground">
                       {item.score_snapshot.summary}
                     </p>
                   )}
-                  <p className="mt-3 text-xs text-stone-700">
+                  <p className="mt-3 text-xs text-foreground">
                     저장일: {new Date(item.created_at).toLocaleDateString('ko-KR')}
                   </p>
-                  <p className="mt-1 text-xs text-stone-700">
+                  <p className="mt-1 text-xs text-foreground">
                     {formatRetentionLabel(item.created_at)}
                   </p>
                 </Link>
@@ -181,7 +181,7 @@ export default function HistoryPage() {
                     type="button"
                     onClick={() => void handleDeleteItem(item.id)}
                     disabled={deletingItemId !== null || isDeletingAll}
-                    className="h-8 rounded-full bg-white/90 px-3 text-xs font-semibold text-rose-700 hover:bg-white disabled:cursor-not-allowed disabled:text-rose-300"
+                    className="h-8 rounded-full bg-card/90 px-3 text-xs font-semibold text-primary hover:bg-card disabled:cursor-not-allowed disabled:text-primary/30"
                   >
                     {deletingItemId === item.id ? '삭제 중...' : '기록삭제'}
                   </Button>

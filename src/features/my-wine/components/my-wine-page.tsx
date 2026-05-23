@@ -33,9 +33,9 @@ export function MyWinePage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-stone-50 px-5 py-12 text-stone-800 md:px-8">
-        <div className="mx-auto w-full max-w-6xl">
-          <p className="text-sm text-stone-500">나의 와인 화면을 불러오는 중...</p>
+      <main className="min-h-screen bg-background px-5 py-section-12 text-foreground md:px-8">
+        <div className="mx-auto w-full max-w-page">
+          <p className="text-sm text-muted-foreground">나의 와인 화면을 불러오는 중...</p>
         </div>
       </main>
     );
@@ -43,17 +43,17 @@ export function MyWinePage() {
 
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen bg-stone-50 px-5 py-12 text-stone-800 md:px-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center text-center">
+      <main className="min-h-screen bg-background px-5 py-section-12 text-foreground md:px-8">
+        <div className="mx-auto flex w-full max-w-page flex-col items-center text-center">
           <div className="w-full max-w-md">
-            <h1 className="text-2xl font-bold text-rose-900">나의 와인</h1>
-            <p className="mt-3 text-sm text-stone-600">
+            <h1 className="text-2xl font-bold text-primary">나의 와인</h1>
+            <p className="mt-3 text-sm text-muted-foreground">
               프로필 설정과 와인 기록을 관리하려면 로그인이 필요합니다.
             </p>
-            <Button asChild className="mt-8 rounded-2xl bg-rose-700 text-white hover:bg-rose-800">
+            <Button asChild className="mt-8 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90">
               <Link href="/login">로그인/회원가입</Link>
             </Button>
-            <Button asChild variant="ghost" className="mt-2 w-full text-stone-600">
+            <Button asChild variant="ghost" className="mt-2 w-full text-muted-foreground">
               <Link href="/">홈으로</Link>
             </Button>
           </div>
@@ -63,21 +63,21 @@ export function MyWinePage() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-50 px-5 py-10 text-stone-800 md:px-8 md:py-12">
-      <div className="mx-auto w-full max-w-6xl space-y-8">
+    <main className="min-h-screen bg-background px-5 py-section-10 text-foreground md:px-8 md:py-section-12">
+      <div className="mx-auto w-full max-w-page space-y-section-8">
         <header className="space-y-2">
-          <h1 className="text-2xl font-bold text-rose-900 md:text-3xl">나의 와인</h1>
-          <p className="text-sm text-stone-600 md:text-base">
+          <h1 className="text-2xl font-bold text-primary md:text-3xl">나의 와인</h1>
+          <p className="text-sm text-muted-foreground md:text-base">
             {profileName}님의 프로필과 와인 기록을 한곳에서 관리할 수 있습니다.
           </p>
         </header>
 
         <section id="profile" className="scroll-mt-24">
-          <Card className="rounded-2xl border-stone-200 shadow-sm">
+          <Card className="rounded-2xl border-border shadow-sm">
             <CardHeader className="pb-4">
               <div className="flex flex-wrap items-center gap-2">
-                <CardTitle className="text-lg text-rose-900">나의 와인 관리</CardTitle>
-                <Badge variant="secondary" className="bg-rose-100 text-rose-800 hover:bg-rose-100">
+                <CardTitle className="text-lg text-primary">나의 와인 관리</CardTitle>
+                <Badge variant="secondary" className="bg-secondary text-primary hover:bg-secondary">
                   준비 중
                 </Badge>
               </div>
@@ -87,70 +87,70 @@ export function MyWinePage() {
             </CardHeader>
             <CardContent className="space-y-8">
               <div className="space-y-4">
-                <h2 className="flex items-center gap-2 text-base font-semibold text-rose-900">
+                <h2 className="flex items-center gap-2 text-base font-semibold text-primary">
                   <Settings2 className="h-4 w-4" aria-hidden />
                   프로필 설정
                 </h2>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-stone-200 bg-stone-50/80 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+                  <div className="rounded-xl border border-border bg-muted/80 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       닉네임
                     </p>
-                    <p className="mt-1 flex items-center gap-2 text-base font-semibold text-stone-800">
-                      <UserRound className="h-4 w-4 text-rose-700" aria-hidden />
+                    <p className="mt-1 flex items-center gap-2 text-base font-semibold text-foreground">
+                      <UserRound className="h-4 w-4 text-primary" aria-hidden />
                       {profileName}
                     </p>
                   </div>
-                  <div className="rounded-xl border border-stone-200 bg-stone-50/80 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+                  <div className="rounded-xl border border-border bg-muted/80 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       이메일
                     </p>
-                    <p className="mt-1 break-all text-base font-semibold text-stone-800">
+                    <p className="mt-1 break-all text-base font-semibold text-foreground">
                       {profileEmail ?? '등록된 이메일 없음'}
                     </p>
                   </div>
                 </div>
-                <p className="text-sm leading-relaxed text-stone-600">
+                <p className="text-sm leading-relaxed text-muted-foreground">
                   회원가입 시 입력한 정보가 표시됩니다. 닉네임·이메일 변경 기능은 곧 제공될
                   예정입니다.
                 </p>
               </div>
 
-              <div className="border-t border-stone-200 pt-8">
+              <div className="border-t border-border pt-8">
                 <h2
                   id="my-wine-records-title"
-                  className="flex items-center gap-2 text-base font-semibold text-rose-900"
+                  className="flex items-center gap-2 text-base font-semibold text-primary"
                 >
                   <Wine className="h-4 w-4" aria-hidden />
                   마신 와인 기록
                 </h2>
-                <p className="mt-2 text-sm text-stone-600">
+                <p className="mt-2 text-sm text-muted-foreground">
                   마셔본 와인을 기록하고 메모를 남기는 기능은 곧 제공될 예정입니다.
                 </p>
-                <div className="mt-4 rounded-xl border border-dashed border-rose-200 bg-rose-50/50 p-6 text-center">
-                  <Grape className="mx-auto h-8 w-8 text-rose-400" aria-hidden />
-                  <p className="mt-3 text-sm text-stone-600">
+                <div className="mt-4 rounded-xl border border-dashed border-primary/30 bg-accent/50 p-6 text-center">
+                  <Grape className="mx-auto h-8 w-8 text-primary/50" aria-hidden />
+                  <p className="mt-3 text-sm text-muted-foreground">
                     품종, 평점, 테이스팅 노트를 저장하는 나만의 와인 셀러가 준비되고 있습니다.
                   </p>
                 </div>
               </div>
 
-              <div className="border-t border-stone-200 pt-8">
-                <h2 id="my-wine-links-title" className="text-base font-semibold text-rose-900">
+              <div className="border-t border-border pt-8">
+                <h2 id="my-wine-links-title" className="text-base font-semibold text-primary">
                   바로가기
                 </h2>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Button
                     asChild
                     variant="outline"
-                    className="h-auto justify-start rounded-2xl border-rose-200 px-4 py-4 text-left hover:bg-rose-50"
+                    className="h-auto justify-start rounded-2xl border-primary/30 px-4 py-4 text-left hover:bg-accent"
                   >
                     <Link href="/survey" className="flex flex-col items-start gap-1">
-                      <span className="flex items-center gap-2 font-semibold text-rose-900">
+                      <span className="flex items-center gap-2 font-semibold text-primary">
                         <Grape className="h-4 w-4" aria-hidden />
                         취향 찾기
                       </span>
-                      <span className="text-xs font-normal text-stone-600">
+                      <span className="text-xs font-normal text-muted-foreground">
                         새로운 와인 추천을 받아보세요.
                       </span>
                     </Link>
@@ -158,14 +158,14 @@ export function MyWinePage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="h-auto justify-start rounded-2xl border-rose-200 px-4 py-4 text-left hover:bg-rose-50"
+                    className="h-auto justify-start rounded-2xl border-primary/30 px-4 py-4 text-left hover:bg-accent"
                   >
                     <Link href="/history" className="flex flex-col items-start gap-1">
-                      <span className="flex items-center gap-2 font-semibold text-rose-900">
+                      <span className="flex items-center gap-2 font-semibold text-primary">
                         <History className="h-4 w-4" aria-hidden />
                         이전 추천 기록
                       </span>
-                      <span className="text-xs font-normal text-stone-600">
+                      <span className="text-xs font-normal text-muted-foreground">
                         저장된 추천 결과를 다시 확인하세요.
                       </span>
                     </Link>

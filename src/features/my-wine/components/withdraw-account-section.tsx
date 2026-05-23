@@ -44,12 +44,12 @@ export function WithdrawAccountSection() {
     <>
       <section
         aria-label="회원 탈퇴"
-        className="flex flex-col items-center border-t border-stone-200 pt-10"
+        className="flex flex-col items-center border-t border-border pt-section-10"
       >
         <Button
           type="button"
           variant="ghost"
-          className="text-sm text-stone-500 underline-offset-4 hover:bg-transparent hover:text-rose-800 hover:underline"
+          className="text-sm text-muted-foreground underline-offset-4 hover:bg-transparent hover:text-primary hover:underline"
           onClick={() => setConfirmOpen(true)}
         >
           탈퇴하기

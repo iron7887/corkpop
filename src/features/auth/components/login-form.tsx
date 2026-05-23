@@ -90,14 +90,14 @@ export function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-stone-700">이메일</FormLabel>
+              <FormLabel className="text-foreground">이메일</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="email"
                   autoComplete="email"
                   placeholder="name@example.com"
-                  className="rounded-xl border-stone-200 bg-white"
+                  className="rounded-xl border-border bg-card"
                 />
               </FormControl>
               <FormMessage />
@@ -110,14 +110,14 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-stone-700">비밀번호</FormLabel>
+              <FormLabel className="text-foreground">비밀번호</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="password"
                   autoComplete="current-password"
                   placeholder="비밀번호를 입력해 주세요"
-                  className="rounded-xl border-stone-200 bg-white"
+                  className="rounded-xl border-border bg-card"
                 />
               </FormControl>
               <FormMessage />
@@ -126,7 +126,7 @@ export function LoginForm() {
         />
 
         {submitError ? (
-          <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-800" role="alert">
+          <p className="rounded-xl bg-accent px-4 py-3 text-sm text-primary" role="alert">
             {submitError}
           </p>
         ) : null}
@@ -134,7 +134,7 @@ export function LoginForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-2xl bg-rose-700 text-white hover:bg-rose-800"
+          className="w-full rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90"
         >
           {isSubmitting ? (
             <>
@@ -146,11 +146,11 @@ export function LoginForm() {
           )}
         </Button>
 
-        <p className="text-center text-sm text-stone-600">
+        <p className="text-center text-sm text-muted-foreground">
           아직 계정이 없으신가요?{' '}
           <Link
             href="/signup"
-            className="font-semibold text-rose-700 underline-offset-4 hover:underline"
+            className="font-semibold text-primary underline-offset-4 hover:underline"
           >
             회원가입
           </Link>

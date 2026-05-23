@@ -63,8 +63,8 @@ function AuthConfirmContent() {
   }, [nextPath, router]);
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center bg-stone-50 px-5 py-12 text-stone-700">
-      <Loader2 className="h-8 w-8 animate-spin text-rose-700" aria-hidden />
+    <div className="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center bg-background px-5 py-section-12 text-foreground">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" aria-hidden />
       <p className="mt-4 text-sm">{message}</p>
     </div>
   );
@@ -74,7 +74,7 @@ export default function AuthConfirmPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center bg-stone-50 text-sm text-stone-500">
+        <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center bg-background text-sm text-muted-foreground">
           인증 처리 중...
         </div>
       }

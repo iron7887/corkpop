@@ -1,5 +1,6 @@
 'use client';
 
+import { HeroRandomImage } from '@/components/hero-random-image';
 import { Button } from '@/components/ui/button';
 import { getRecommendationCardBackgroundUrl } from '@/constants/wine-recommendation-card-images';
 import { formatRankedGrapesSummary } from '@/features/survey/lib/grape-catalog';
@@ -112,90 +113,60 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-stone-50 text-stone-800">
+    <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <motion.section
-        className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 pb-5 pt-4 md:px-8 md:pt-6"
+        className="mx-auto flex w-full min-w-0 max-w-page flex-col gap-4 overflow-x-hidden px-5 pb-section-5 pt-section-4 md:px-8 md:pt-section-6"
         variants={sectionFadeIn}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.55, ease: 'easeOut' }}
       >
-        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
-          <motion.div
-            className="flex h-full min-h-0 flex-col gap-4"
-            variants={sectionFadeIn}
-            transition={{ delay: 0.05, duration: 0.5, ease: 'easeOut' }}
-          >
-            <h1 className="inline-flex w-fit flex-col items-start gap-3 self-start">
-              <span className="inline-flex w-full items-center justify-center rounded-full bg-rose-100 px-3 py-1 text-center text-xs font-semibold text-rose-800">
-                <Sparkles className="mr-1 h-3.5 w-3.5" aria-hidden />
-                2분 설문으로 찾는 나만의 와인
-              </span>
-            </h1>
-            <p className="max-w-xl text-sm text-stone-600 md:text-base">
-              간단한 질문에 답하면 당도와 스타일을 분석해 당신에게 맞는 와인
-              카테고리와 품종을 추천합니다.
-            </p>
-            <div className="flex min-h-0 flex-col items-start md:flex-1 md:justify-end">
-              <Button
-                asChild
-                className="h-14 shrink-0 whitespace-nowrap rounded-2xl bg-rose-700 px-5 text-white hover:bg-rose-800"
-              >
-                <Link
-                  href="/survey"
-                  className="flex h-full items-center justify-center text-sm font-semibold"
-                >
-                  {'지금 시작하기 >'}
-                </Link>
-              </Button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="min-h-[220px] overflow-hidden rounded-2xl border border-rose-100 bg-white shadow-sm md:flex md:h-full md:min-h-0 md:flex-col"
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          >
-            <motion.img
-              src="/myimg/land-main.png"
-              alt="드론으로 내려다본 광활한 포도밭 전경"
-              className="h-full min-h-[220px] w-full object-cover md:min-h-0 md:flex-1"
-              initial={{ scale: 1.05 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            />
-          </motion.div>
+        <div className="min-w-0 overflow-hidden rounded-2xl border border-primary/20 bg-card shadow-sm">
+          <HeroRandomImage />
         </div>
+
+        <motion.div
+          className="flex flex-wrap items-center gap-3"
+          variants={sectionFadeIn}
+          transition={{ delay: 0.05, duration: 0.5, ease: 'easeOut' }}
+        >
+          <p className="text-sm font-semibold text-foreground md:text-base">
+            간단한 설문으로 와인스타일 찾기
+          </p>
+          <Button
+            asChild
+            className="rounded-2xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+          >
+            <Link href="/survey">Go!</Link>
+          </Button>
+        </motion.div>
       </motion.section>
 
-      <section className="mx-auto w-full max-w-6xl px-5 pb-3 md:px-8">
-        <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm md:p-6">
+      <section className="mx-auto w-full max-w-page px-5 pb-section-3 md:px-8">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm md:p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-rose-900">이전 추천 기록</h2>
+            <h2 className="text-lg font-semibold text-primary">이전 추천 기록</h2>
             {history.length > HOME_HISTORY_PREVIEW_COUNT && (
               <Button
                 asChild
                 variant="outline"
                 size="sm"
-                className="rounded-full border-rose-200 bg-white text-rose-800 hover:bg-rose-50"
+                className="rounded-full border-primary/30 bg-card text-primary hover:bg-accent"
               >
                 <Link href="/history">이전 추천기록 모두보기</Link>
               </Button>
             )}
           </div>
           {(username || history.length >= HOME_HISTORY_PREVIEW_COUNT) && (
-            <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-stone-700">
+            <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-foreground">
               {username && <p>{username}님</p>}
               {history.length >= HOME_HISTORY_PREVIEW_COUNT && (
                 <p>총 {history.length}건의 추천기록이 저장되어 있습니다.</p>
               )}
             </div>
           )}
-          {isHistoryLoading && <p className="text-sm text-stone-500">기록을 불러오는 중입니다...</p>}
+          {isHistoryLoading && <p className="text-sm text-muted-foreground">기록을 불러오는 중입니다...</p>}
           {!isHistoryLoading && (
             <>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-3">
@@ -204,7 +175,7 @@ export default function Home() {
                   if (item) {
                     return (
                       <div key={item.id} className="min-w-0">
-                        <article className="group relative isolate flex h-full min-h-[13rem] flex-col items-start justify-start overflow-hidden rounded-xl border border-rose-100 p-3 text-left shadow-sm transition hover:border-rose-200 sm:p-4 lg:min-h-[15rem] lg:p-4">
+                        <article className="group relative isolate flex h-full min-h-[13rem] flex-col items-start justify-start overflow-hidden rounded-xl border border-primary/20 p-3 text-left shadow-sm transition hover:border-primary/30 sm:p-4 lg:min-h-[15rem] lg:p-4">
                           <Link href={`/history/${item.id}`} className="block min-w-0 flex-1">
                             <div
                               className="pointer-events-none absolute inset-0 -z-20 scale-105 bg-cover bg-center transition duration-500 group-hover:scale-110"
@@ -214,24 +185,24 @@ export default function Home() {
                               aria-hidden
                             />
                             <div
-                              className="pointer-events-none absolute inset-0 -z-10 bg-white/70"
+                              className="pointer-events-none absolute inset-0 -z-10 bg-card/70"
                               aria-hidden
                             />
-                            <p className="relative z-10 line-clamp-2 text-left text-xs font-semibold text-rose-900 drop-shadow-sm">
+                            <p className="relative z-10 line-clamp-2 text-left text-xs font-semibold text-primary drop-shadow-sm">
                               {item.recommended_type}
                             </p>
-                            <p className="relative z-10 mt-1 line-clamp-3 text-left text-xs font-medium text-stone-900 sm:text-sm">
+                            <p className="relative z-10 mt-1 line-clamp-3 text-left text-xs font-medium text-foreground sm:text-sm">
                               추천 품종: {formatRankedGrapesSummary(item.recommended_grapes)}
                             </p>
                             {item.score_snapshot?.summary && (
-                              <p className="relative z-10 mt-2 line-clamp-3 text-left text-xs text-stone-800 sm:text-sm">
+                              <p className="relative z-10 mt-2 line-clamp-3 text-left text-xs text-foreground sm:text-sm">
                                 {item.score_snapshot.summary}
                               </p>
                             )}
-                            <p className="relative z-10 mt-2 text-left text-[11px] text-stone-700 sm:text-xs">
+                            <p className="relative z-10 mt-2 text-left text-[11px] text-foreground sm:text-xs">
                               저장일: {new Date(item.created_at).toLocaleDateString('ko-KR')}
                             </p>
-                            <p className="relative z-10 mt-1 text-left text-[11px] text-stone-600 sm:text-xs">
+                            <p className="relative z-10 mt-1 text-left text-[11px] text-muted-foreground sm:text-xs">
                               {formatRetentionLabel(item.created_at)}
                             </p>
                           </Link>
@@ -240,7 +211,7 @@ export default function Home() {
                               type="button"
                               onClick={() => void handleDeleteItem(item.id)}
                               disabled={deletingItemId !== null}
-                              className="h-8 rounded-full bg-white/90 px-3 text-xs font-semibold text-rose-700 hover:bg-white disabled:cursor-not-allowed disabled:text-rose-300"
+                              className="h-8 rounded-full bg-card/90 px-3 text-xs font-semibold text-primary hover:bg-card disabled:cursor-not-allowed disabled:text-primary/30"
                             >
                               {deletingItemId === item.id ? '삭제 중...' : '기록삭제'}
                             </Button>
@@ -252,10 +223,10 @@ export default function Home() {
                   return (
                     <div key={`history-slot-empty-${index}`} className="min-w-0">
                       <div
-                        className="flex h-full min-h-[13rem] flex-col items-start justify-start rounded-xl border border-dashed border-stone-200 bg-stone-50/90 p-3 text-left sm:p-4 lg:min-h-[15rem] lg:p-4"
+                        className="flex h-full min-h-[13rem] flex-col items-start justify-start rounded-xl border border-dashed border-border bg-muted/90 p-3 text-left sm:p-4 lg:min-h-[15rem] lg:p-4"
                         role="presentation"
                       >
-                        <p className="text-left text-xs font-medium text-stone-400 sm:text-sm">저장기록이 없습니다.</p>
+                        <p className="text-left text-xs font-medium text-muted-foreground/70 sm:text-sm">저장기록이 없습니다.</p>
                       </div>
                     </div>
                   );
@@ -267,7 +238,7 @@ export default function Home() {
       </section>
 
       <motion.section
-        className="bg-rose-50/60 py-10"
+        className="bg-accent/60 py-section-10"
         variants={sectionFadeIn}
         initial="hidden"
         whileInView="visible"
@@ -275,7 +246,7 @@ export default function Home() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
         <motion.div
-          className="mx-auto grid w-full max-w-6xl gap-3 px-5 md:grid-cols-3 md:px-8"
+          className="mx-auto grid w-full max-w-page gap-3 px-5 md:grid-cols-3 md:px-8"
           variants={cardStagger}
           initial="hidden"
           whileInView="visible"
@@ -301,22 +272,22 @@ export default function Home() {
           ].map((feature) => (
             <motion.article
               key={feature.title}
-              className="rounded-2xl border border-rose-100 bg-white p-4 shadow-sm"
+              className="rounded-2xl border border-primary/20 bg-card p-4 shadow-sm"
               variants={sectionFadeIn}
               transition={{ duration: 0.45, ease: 'easeOut' }}
             >
-              <feature.icon className="mb-3 h-5 w-5 text-rose-700" />
-              <h2 className="mb-2 text-lg font-semibold text-rose-900">
+              <feature.icon className="mb-3 h-5 w-5 text-primary" />
+              <h2 className="mb-2 text-lg font-semibold text-primary">
                 {feature.title}
               </h2>
-              <p className="text-sm text-stone-600">{feature.description}</p>
+              <p className="text-sm text-muted-foreground">{feature.description}</p>
             </motion.article>
           ))}
         </motion.div>
       </motion.section>
 
       <motion.section
-        className="mx-auto w-full max-w-6xl px-5 py-10 md:px-8"
+        className="mx-auto w-full max-w-page px-5 py-section-10 md:px-8"
         variants={sectionFadeIn}
         initial="hidden"
         whileInView="visible"
@@ -324,10 +295,10 @@ export default function Home() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
         <div className="mb-4">
-          <h3 className="text-2xl font-bold text-rose-900 md:text-3xl">
+          <h3 className="text-2xl font-bold text-primary md:text-3xl">
             이용 방법
           </h3>
-          <p className="mt-1.5 text-sm text-stone-600 md:text-base">
+          <p className="mt-1.5 text-sm text-muted-foreground md:text-base">
             처음이어도 부담 없이 3단계로 끝낼 수 있습니다.
           </p>
         </div>
@@ -339,27 +310,27 @@ export default function Home() {
           viewport={{ once: true, amount: 0.25 }}
         >
           {[
-            '기본 취향 설문 5문항',
+            '기본 취향 설문',
             '카테고리 기반 추가 설문',
             '결과 확인 및 추천 와인 저장',
           ].map((step, index) => (
             <motion.div
               key={step}
-              className="rounded-2xl border border-stone-200 bg-stone-100/60 p-4"
+              className="rounded-2xl border border-border bg-secondary/60 p-4"
               variants={sectionFadeIn}
               transition={{ duration: 0.4, ease: 'easeOut' }}
             >
-              <p className="mb-1.5 text-xs font-semibold text-rose-700">
+              <p className="mb-1.5 text-xs font-semibold text-primary">
                 STEP {index + 1}
               </p>
-              <p className="text-sm font-medium text-stone-800">{step}</p>
+              <p className="text-sm font-medium text-foreground">{step}</p>
             </motion.div>
           ))}
         </motion.div>
         <div className="mt-6 flex justify-center">
           <Button
             asChild
-            className="h-14 shrink-0 whitespace-nowrap rounded-2xl bg-rose-700 px-5 text-white hover:bg-rose-800"
+            className="h-14 shrink-0 whitespace-nowrap rounded-2xl bg-primary px-5 text-primary-foreground hover:bg-primary/90"
           >
             <Link
               href="/survey"

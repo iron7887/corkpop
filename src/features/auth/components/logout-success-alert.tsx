@@ -30,14 +30,14 @@ export function LogoutSuccessAlert({ open, onOpenChange }: LogoutSuccessAlertPro
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex min-h-screen items-center justify-center bg-stone-900/40 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex min-h-screen items-center justify-center bg-foreground/40 p-4 backdrop-blur-sm"
       role="alertdialog"
       aria-modal="true"
       aria-labelledby="logout-alert-title"
       aria-describedby="logout-alert-description"
     >
-      <div className="w-full max-w-sm rounded-2xl border border-stone-200 bg-white p-6 shadow-xl">
-        <h2 id="logout-alert-title" className="text-center text-lg font-bold text-rose-900">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-xl">
+        <h2 id="logout-alert-title" className="text-center text-lg font-bold text-primary">
           로그아웃 되었습니다.
         </h2>
         <p id="logout-alert-description" className="sr-only">
@@ -45,7 +45,7 @@ export function LogoutSuccessAlert({ open, onOpenChange }: LogoutSuccessAlertPro
         </p>
         <Button
           type="button"
-          className="mt-6 w-full rounded-2xl bg-rose-700 text-white hover:bg-rose-800"
+          className="mt-6 w-full rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90"
           onClick={handleGoHome}
         >
           홈으로

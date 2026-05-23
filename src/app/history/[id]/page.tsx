@@ -73,18 +73,18 @@ export default function RecommendationDetailPage() {
   }, [detail?.score_snapshot?.situations]);
 
   return (
-    <main className="min-h-screen bg-stone-50 px-5 py-10 text-stone-800 md:px-8">
-      <section className="mx-auto w-full max-w-6xl rounded-3xl border border-rose-100 bg-white p-6 shadow-sm md:p-8">
+    <main className="min-h-screen bg-background px-5 py-section-10 text-foreground md:px-8">
+      <section className="mx-auto w-full max-w-page rounded-3xl border border-primary/20 bg-card p-6 shadow-sm md:p-8">
         <div className="mb-6 flex items-center justify-between">
-          <Link href="/" className="text-sm font-semibold text-rose-700 hover:text-rose-800">
+          <Link href="/" className="text-sm font-semibold text-primary hover:text-primary">
             ← 홈으로
           </Link>
-          <Link href="/survey" className="text-sm font-semibold text-rose-700 hover:text-rose-800">
+          <Link href="/survey" className="text-sm font-semibold text-primary hover:text-primary">
             새 설문 하기
           </Link>
         </div>
 
-        {isLoading && <p className="text-sm text-stone-500">상세 결과를 불러오는 중입니다...</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">상세 결과를 불러오는 중입니다...</p>}
 
         {!isLoading && errorMessage && (
           <div className="space-y-4">
@@ -97,23 +97,23 @@ export default function RecommendationDetailPage() {
 
         {!isLoading && detail && (
           <div className="space-y-6">
-            <p className="inline-flex rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700">
+            <p className="inline-flex rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-primary">
               저장된 추천 결과
             </p>
             <div>
-              <h1 className="text-2xl font-bold text-rose-900">당신의 와인 취향 상세</h1>
-              <p className="mt-2 text-stone-700">{formatTypeLabel(detail.recommended_type)}</p>
+              <h1 className="text-2xl font-bold text-primary">당신의 와인 취향 상세</h1>
+              <p className="mt-2 text-foreground">{formatTypeLabel(detail.recommended_type)}</p>
             </div>
 
-            <article className="rounded-2xl border border-rose-100 bg-rose-50/60 p-5">
+            <article className="rounded-2xl border border-primary/20 bg-accent/60 p-5">
               {detail.score_snapshot?.summary && (
-                <h2 className="text-lg font-semibold text-rose-900">{detail.score_snapshot.summary}</h2>
+                <h2 className="text-lg font-semibold text-primary">{detail.score_snapshot.summary}</h2>
               )}
               {detail.score_snapshot?.reason && (
-                <p className="mt-2 text-sm text-stone-700">{detail.score_snapshot.reason}</p>
+                <p className="mt-2 text-sm text-foreground">{detail.score_snapshot.reason}</p>
               )}
               <div className="mt-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   추천 품종 (와인 종류별 · 1~3차)
                 </p>
                 <ul className="mt-3 space-y-3">
@@ -125,28 +125,28 @@ export default function RecommendationDetailPage() {
                     return (
                       <li
                         key={`${nameKo}-${i}`}
-                        className="rounded-xl border border-rose-100/80 bg-white/70 p-3 shadow-sm"
+                        className="rounded-xl border border-primary/20/80 bg-card/70 p-3 shadow-sm"
                       >
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <p className="text-xs font-semibold text-rose-800">{tierMeta.tier}</p>
+                          <p className="text-xs font-semibold text-primary">{tierMeta.tier}</p>
                           {tierMeta.hint ? (
-                            <p className="text-[11px] text-stone-500">{tierMeta.hint}</p>
+                            <p className="text-[11px] text-muted-foreground">{tierMeta.hint}</p>
                           ) : null}
                         </div>
                         {kindLabel && (
-                          <p className="mt-2 text-xs font-medium text-stone-500">
-                            종류 · <span className="text-stone-800">{kindLabel}</span>
+                          <p className="mt-2 text-xs font-medium text-muted-foreground">
+                            종류 · <span className="text-foreground">{kindLabel}</span>
                           </p>
                         )}
-                        <p className="mt-1 text-sm font-semibold text-stone-900">
+                        <p className="mt-1 text-sm font-semibold text-foreground">
                           {nameKo}
                           {profile && (
-                            <span className="font-normal text-stone-500"> ({profile.nameEn})</span>
+                            <span className="font-normal text-muted-foreground"> ({profile.nameEn})</span>
                           )}
                         </p>
                         {profile && (
-                          <p className="mt-2 text-sm text-stone-700">
-                            <span className="font-medium text-stone-600">스타일 ·</span>{' '}
+                          <p className="mt-2 text-sm text-foreground">
+                            <span className="font-medium text-muted-foreground">스타일 ·</span>{' '}
                             {profile.styleHint}
                           </p>
                         )}
@@ -155,14 +155,14 @@ export default function RecommendationDetailPage() {
                   })}
                 </ul>
               </div>
-              <p className="mt-3 text-xs font-semibold text-stone-500">추천 상황</p>
-              <ul className="mt-2 space-y-1 text-sm text-stone-700">
+              <p className="mt-3 text-xs font-semibold text-muted-foreground">추천 상황</p>
+              <ul className="mt-2 space-y-1 text-sm text-foreground">
                 {situations.length === 0 && <li>- 추천 상황 정보가 없습니다.</li>}
                 {situations.map((item) => (
                   <li key={item}>- {item}</li>
                 ))}
               </ul>
-              <p className="mt-4 text-xs text-stone-500">
+              <p className="mt-4 text-xs text-muted-foreground">
                 저장일: {new Date(detail.created_at).toLocaleString('ko-KR')}
               </p>
             </article>

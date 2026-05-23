@@ -63,12 +63,12 @@ export function WithdrawAccountDialog({
       descriptionId="withdraw-confirm-description"
       onBackdropClick={handleBackdropClick}
     >
-      <h2 id="withdraw-confirm-title" className="text-center text-lg font-bold text-rose-900">
+      <h2 id="withdraw-confirm-title" className="text-center text-lg font-bold text-primary">
         회원 탈퇴
       </h2>
       <p
         id="withdraw-confirm-description"
-        className="mt-3 text-center text-sm leading-relaxed text-stone-600"
+        className="mt-3 text-center text-sm leading-relaxed text-muted-foreground"
       >
         회원님의 모든 정보가 삭제됩니다. 탈퇴하시겠습니까?
       </p>
@@ -76,7 +76,7 @@ export function WithdrawAccountDialog({
         <Button
           type="button"
           variant="outline"
-          className="rounded-2xl border-stone-300"
+          className="rounded-2xl border-border"
           disabled={isWithdrawing}
           onClick={() => onOpenChange(false)}
         >
@@ -84,7 +84,7 @@ export function WithdrawAccountDialog({
         </Button>
         <Button
           type="button"
-          className="rounded-2xl bg-rose-700 text-white hover:bg-rose-800"
+          className="rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90"
           disabled={isWithdrawing}
           onClick={onConfirm}
         >
@@ -123,18 +123,18 @@ export function WithdrawAccountErrorDialog({
       descriptionId="withdraw-error-description"
       onBackdropClick={() => onOpenChange(false)}
     >
-      <h2 id="withdraw-error-title" className="text-center text-lg font-bold text-rose-900">
+      <h2 id="withdraw-error-title" className="text-center text-lg font-bold text-primary">
         탈퇴 실패
       </h2>
       <p
         id="withdraw-error-description"
-        className="mt-3 text-center text-sm leading-relaxed text-stone-600"
+        className="mt-3 text-center text-sm leading-relaxed text-muted-foreground"
       >
         {message}
       </p>
       <Button
         type="button"
-        className="mt-6 w-full rounded-2xl bg-rose-700 text-white hover:bg-rose-800"
+        className="mt-6 w-full rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90"
         onClick={() => onOpenChange(false)}
       >
         확인
@@ -153,7 +153,7 @@ function DialogBackdrop({
 }) {
   return (
     <div
-      className="fixed inset-0 z-[100] flex min-h-screen items-center justify-center bg-stone-900/40 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex min-h-screen items-center justify-center bg-foreground/40 p-4 backdrop-blur-sm"
       role="presentation"
       onClick={onClose}
     >
@@ -173,7 +173,7 @@ function DialogPanel({
 }) {
   return (
     <div
-      className="w-full max-w-sm rounded-2xl border border-stone-200 bg-white p-6 shadow-xl"
+      className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-xl"
       role="alertdialog"
       aria-modal="true"
       aria-labelledby={titleId}
