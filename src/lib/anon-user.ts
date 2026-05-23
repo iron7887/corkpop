@@ -1,6 +1,6 @@
 'use client';
 
-const ANON_USER_KEY = 'mywinetype_anon_user_id';
+const ANON_USER_KEY = 'corkpop_anon_user_id';
 
 export const getOrCreateAnonUserId = () => {
   if (typeof window === 'undefined') {

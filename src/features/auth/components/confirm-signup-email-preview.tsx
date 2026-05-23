@@ -21,7 +21,7 @@ export function ConfirmSignupEmailPreview({ email }: ConfirmSignupEmailPreviewPr
       <header className="border-b border-rose-100 bg-gradient-to-br from-rose-50 to-stone-50 px-5 py-4">
         <div className="flex items-center gap-2 text-rose-900">
           <Mail className="h-5 w-5 shrink-0" aria-hidden />
-          <p className="text-lg font-extrabold tracking-tight">MyWineType</p>
+          <p className="text-lg font-extrabold tracking-tight">CorkPop</p>
         </div>
         <p className="mt-1 text-xs text-stone-500">와인 취향 설문 기반 추천 서비스</p>
       </header>

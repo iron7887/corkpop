@@ -30,7 +30,7 @@ npm run dev
 
 ## Deploy
 
-https://mywinetype.vercel.app/
+https://corkpop.vercel.app/
 
 ## Project Goal
 

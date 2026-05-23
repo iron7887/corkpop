@@ -69,7 +69,7 @@ export function SiteHeader() {
           className="flex min-w-0 items-center gap-2 text-rose-900 transition-opacity hover:opacity-90"
         >
           <Wine className="h-8 w-8 shrink-0" aria-hidden />
-          <span className="truncate text-lg font-extrabold tracking-tight">MyWineType</span>
+          <span className="truncate text-lg font-extrabold tracking-tight">CorkPop</span>
         </Link>
         <nav
           aria-label="주요 메뉴"

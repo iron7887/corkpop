@@ -25,7 +25,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const PLACEHOLDER_HERO =
-  'https://picsum.photos/seed/mywinetype-wine-guide-hero/960/360';
+  'https://picsum.photos/seed/corkpop-wine-guide-hero/960/360';
 
 function BulletList({ items }: { items: readonly string[] }) {
   return (
