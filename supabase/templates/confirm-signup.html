@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyWineType 회원가입 이메일 인증</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #fafaf9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, sans-serif;
+      color: #292524;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      style="background-color: #fafaf9; padding: 32px 16px"
+    >
+      <tr>
+        <td align="center">
+          <table
+            role="presentation"
+            width="100%"
+            cellspacing="0"
+            cellpadding="0"
+            style="
+              max-width: 520px;
+              background-color: #ffffff;
+              border: 1px solid #e7e5e4;
+              border-radius: 20px;
+              overflow: hidden;
+            "
+          >
+            <tr>
+              <td
+                style="
+                  padding: 28px 32px 20px;
+                  background: linear-gradient(135deg, #fff1f2 0%, #fafaf9 100%);
+                  border-bottom: 1px solid #fecdd3;
+                "
+              >
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 22px;
+                    font-weight: 800;
+                    color: #881337;
+                    letter-spacing: -0.02em;
+                  "
+                >
+                  MyWineType
+                </p>
+                <p
+                  style="
+                    margin: 8px 0 0;
+                    font-size: 14px;
+                    color: #78716c;
+                  "
+                >
+                  와인 취향 설문 기반 추천 서비스
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 32px">
+                <h1
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 20px;
+                    line-height: 1.4;
+                    color: #881337;
+                  "
+                >
+                  이메일 인증이 필요합니다
+                </h1>
+
+                <p
+                  style="
+                    margin: 0 0 24px;
+                    font-size: 15px;
+                    line-height: 1.7;
+                    color: #44403c;
+                  "
+                >
+                  MyWineType 에 회원가입을 하셨다면, 아래 링크를 클릭하여 인증은
+                  완료해주세요.
+                </p>
+
+                <table role="presentation" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td
+                      align="center"
+                      style="
+                        border-radius: 16px;
+                        background-color: #be123c;
+                      "
+                    >
+                      <a
+                        href="{{ .ConfirmationURL }}"
+                        target="_blank"
+                        style="
+                          display: inline-block;
+                          padding: 14px 28px;
+                          font-size: 15px;
+                          font-weight: 700;
+                          color: #ffffff;
+                          text-decoration: none;
+                          border-radius: 16px;
+                        "
+                      >
+                        이메일 인증하기
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+                <p
+                  style="
+                    margin: 24px 0 0;
+                    font-size: 13px;
+                    line-height: 1.6;
+                    color: #78716c;
+                  "
+                >
+                  버튼이 동작하지 않으면 아래 링크를 브라우저에 붙여 넣어 주세요.
+                </p>
+
+                <p
+                  style="
+                    margin: 8px 0 0;
+                    font-size: 12px;
+                    line-height: 1.6;
+                    word-break: break-all;
+                  "
+                >
+                  <a
+                    href="{{ .ConfirmationURL }}"
+                    style="color: #be123c; text-decoration: underline"
+                    >{{ .ConfirmationURL }}</a
+                  >
+                </p>
+
+                <p
+                  style="
+                    margin: 28px 0 0;
+                    padding-top: 20px;
+                    border-top: 1px solid #e7e5e4;
+                    font-size: 12px;
+                    line-height: 1.6;
+                    color: #a8a29e;
+                  "
+                >
+                  본인이 가입하지 않았다면 이 메일을 무시하셔도 됩니다.<br />
+                  가입 이메일: {{ .Email }}
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <p
+            style="
+              margin: 20px 0 0;
+              font-size: 11px;
+              line-height: 1.5;
+              color: #a8a29e;
+            "
+          >
+            © MyWineType. All rights reserved.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

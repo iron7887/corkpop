@@ -1,0 +1,7 @@
+# Supabase CLI 사용 시 인증 메일 템플릿 설정
+# 대시보드 적용: Authentication > Email Templates > Confirm signup 에
+# supabase/templates/confirm-signup.html 내용을 붙여 넣으세요.
+
+[auth.email.template.confirmation]
+subject = "[MyWineType] 회원가입 이메일 인증을 완료해 주세요"
+content_path = "./supabase/templates/confirm-signup.html"
