@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'CorkPop',
-    template: 'CorkPop',
+    default: 'Corkpop - POP your Wine',
+    template: 'Corkpop - POP your Wine',
   },
   description: '와인 취향 설문 기반 추천 서비스',
 };
