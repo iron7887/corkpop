@@ -14,6 +14,7 @@ const config = {
     },
     extend: {
       spacing: {
+        'section-gap': '60px',
         'section-3': '0.975rem',
         'section-4': '1.3rem',
         'section-5': '1.625rem',

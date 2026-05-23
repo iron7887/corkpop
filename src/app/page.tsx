@@ -17,6 +17,7 @@ import { formatRetentionLabel } from '@/lib/recommendation-history';
 import { motion } from 'framer-motion';
 import { Sparkles, Wine, Grape } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 type HistoryItem = {
@@ -47,12 +48,29 @@ const cardStagger = {
 };
 
 export default function Home() {
+  const pathname = usePathname();
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [username, setUsername] = useState<string | null>(null);
   const [isHistoryLoading, setIsHistoryLoading] = useState(true);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
   const recommendationUserKey = useRecommendationUserKey();
   const sessionDisplayName = useRecommendationDisplayName();
+
+  useEffect(() => {
+    if (pathname !== '/') {
+      return;
+    }
+
+    window.scrollTo(0, 0);
+    setIsHeroVisible(false);
+
+    const frameId = window.requestAnimationFrame(() => {
+      setIsHeroVisible(true);
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [pathname]);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -114,36 +132,33 @@ export default function Home() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
-      <motion.section
-        className="mx-auto flex w-full min-w-0 max-w-page flex-col gap-4 overflow-x-hidden px-5 pb-section-5 pt-section-4 md:px-8 md:pt-section-6"
-        variants={sectionFadeIn}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.55, ease: 'easeOut' }}
-      >
-        <div className="min-w-0 overflow-hidden rounded-2xl border border-primary/20 bg-card shadow-sm">
-          <HeroRandomImage />
-        </div>
-
+      <section className="mx-auto flex w-full min-w-0 max-w-page flex-col overflow-x-hidden px-5 pb-section-gap pt-section-4 md:px-8 md:pt-section-6">
         <motion.div
-          className="flex flex-wrap items-center gap-3"
+          className="flex flex-col gap-4"
           variants={sectionFadeIn}
-          transition={{ delay: 0.05, duration: 0.5, ease: 'easeOut' }}
+          initial="hidden"
+          animate={isHeroVisible ? 'visible' : 'hidden'}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
         >
-          <p className="text-sm font-semibold text-foreground md:text-base">
-            간단한 설문으로 와인스타일 찾기
-          </p>
-          <Button
-            asChild
-            className="rounded-2xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
-          >
-            <Link href="/survey">Go!</Link>
-          </Button>
-        </motion.div>
-      </motion.section>
+          <div className="min-w-0 overflow-hidden rounded-2xl border border-primary/20 bg-card shadow-sm">
+            <HeroRandomImage />
+          </div>
 
-      <section className="mx-auto w-full max-w-page px-5 pb-section-3 md:px-8">
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-sm font-semibold text-foreground md:text-base">
+              간단한 설문으로 와인스타일 찾기
+            </p>
+            <Button
+              asChild
+              className="rounded-2xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+            >
+              <Link href="/survey">Go!</Link>
+            </Button>
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="mx-auto w-full max-w-page px-5 pb-section-gap md:px-8">
         <div className="rounded-2xl border border-border bg-card p-5 shadow-sm md:p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-primary">이전 추천 기록</h2>
@@ -238,7 +253,7 @@ export default function Home() {
       </section>
 
       <motion.section
-        className="bg-accent/60 py-section-10"
+        className="pb-section-gap"
         variants={sectionFadeIn}
         initial="hidden"
         whileInView="visible"
@@ -287,7 +302,7 @@ export default function Home() {
       </motion.section>
 
       <motion.section
-        className="mx-auto w-full max-w-page px-5 py-section-10 md:px-8"
+        className="mx-auto w-full max-w-page px-5 pb-section-gap md:px-8"
         variants={sectionFadeIn}
         initial="hidden"
         whileInView="visible"
@@ -312,7 +327,7 @@ export default function Home() {
           {[
             '기본 취향 설문',
             '카테고리 기반 추가 설문',
-            '결과 확인 및 추천 와인 저장',
+            '결과 확인 및 와인스타일 저장',
           ].map((step, index) => (
             <motion.div
               key={step}

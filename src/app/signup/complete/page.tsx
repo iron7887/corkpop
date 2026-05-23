@@ -49,7 +49,7 @@ function SignupCompleteContent() {
 
 export default function SignupCompletePage() {
   return (
-    <div className="min-h-[calc(100vh-8rem)] bg-background px-5 py-section-12 text-foreground md:px-8">
+    <div className="min-h-[calc(100vh-8rem)] bg-background px-5 pt-section-12 pb-section-gap text-foreground md:px-8">
       <div className="mx-auto flex w-full max-w-page flex-col items-center">
         <Suspense
           fallback={

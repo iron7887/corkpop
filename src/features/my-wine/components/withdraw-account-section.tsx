@@ -44,7 +44,7 @@ export function WithdrawAccountSection() {
     <>
       <section
         aria-label="회원 탈퇴"
-        className="flex flex-col items-center border-t border-border pt-section-10"
+        className="flex flex-col items-center border-t border-border pt-4"
       >
         <Button
           type="button"

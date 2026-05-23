@@ -125,7 +125,7 @@ function SectionHeading({
 export function WineGuidePageContent() {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto w-full max-w-page px-5 pb-section-10 pt-section-4 md:px-8 md:pb-section-14 md:pt-section-6">
+      <div className="mx-auto w-full max-w-page px-5 pt-section-4 md:px-8 md:pt-section-6">
         <p className="text-xs font-semibold uppercase tracking-wider text-primary">가이드</p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
           와인 기초 가이드
@@ -162,7 +162,7 @@ export function WineGuidePageContent() {
           </div>
         </nav>
 
-        <section className="mt-section-14 space-y-section-12" aria-labelledby="wine-regions">
+        <section className="mt-section-gap space-y-section-12 pb-section-gap" aria-labelledby="wine-regions">
           <SectionHeading
             id="wine-regions"
             icon={MapPin}
@@ -199,9 +199,9 @@ export function WineGuidePageContent() {
           </div>
         </section>
 
-        <Separator className="my-section-14 bg-border" />
+        <Separator className="bg-border" />
 
-        <section className="space-y-section-10" aria-labelledby="wine-types">
+        <section className="space-y-section-10 pb-section-gap" aria-labelledby="wine-types">
           <SectionHeading
             id="wine-types"
             icon={BookOpen}
@@ -238,9 +238,9 @@ export function WineGuidePageContent() {
           </div>
         </section>
 
-        <Separator className="my-section-14 bg-border" />
+        <Separator className="bg-border" />
 
-        <section className="space-y-section-10" aria-labelledby="grape-varieties">
+        <section className="space-y-section-10 pb-section-gap" aria-labelledby="grape-varieties">
           <SectionHeading
             id="grape-varieties"
             icon={Grape}
@@ -316,9 +316,9 @@ export function WineGuidePageContent() {
           </div>
         </section>
 
-        <Separator className="my-section-14 bg-border" />
+        <Separator className="bg-border" />
 
-        <section className="space-y-section-10" aria-labelledby="wine-labels">
+        <section className="space-y-section-10 pb-section-gap" aria-labelledby="wine-labels">
           <SectionHeading
             id="wine-labels"
             icon={Tag}
@@ -374,7 +374,7 @@ export function WineGuidePageContent() {
           </div>
         </section>
 
-        <Separator className="my-section-14 bg-border" />
+        <Separator className="bg-border" />
 
         <section
           className="scroll-mt-24 rounded-2xl border border-primary/30 bg-accent/50 p-6 shadow-sm md:p-8"
@@ -400,7 +400,7 @@ export function WineGuidePageContent() {
           </div>
         </section>
 
-        <div className="mt-section-12 flex flex-wrap gap-3">
+        <div className="mt-section-gap flex flex-wrap gap-3 pb-section-gap">
           <Button asChild className="rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90">
             <Link href="/survey">취향 찾기 시작하기</Link>
           </Button>

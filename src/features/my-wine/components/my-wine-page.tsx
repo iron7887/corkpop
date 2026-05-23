@@ -33,7 +33,7 @@ export function MyWinePage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-background px-5 py-section-12 text-foreground md:px-8">
+      <main className="min-h-screen bg-background px-5 pt-section-12 pb-section-gap text-foreground md:px-8">
         <div className="mx-auto w-full max-w-page">
           <p className="text-sm text-muted-foreground">나의 와인 화면을 불러오는 중...</p>
         </div>
@@ -43,7 +43,7 @@ export function MyWinePage() {
 
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen bg-background px-5 py-section-12 text-foreground md:px-8">
+      <main className="min-h-screen bg-background px-5 pt-section-12 pb-section-gap text-foreground md:px-8">
         <div className="mx-auto flex w-full max-w-page flex-col items-center text-center">
           <div className="w-full max-w-md">
             <h1 className="text-2xl font-bold text-primary">나의 와인</h1>
@@ -63,8 +63,8 @@ export function MyWinePage() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-5 py-section-10 text-foreground md:px-8 md:py-section-12">
-      <div className="mx-auto w-full max-w-page space-y-section-8">
+    <main className="min-h-screen bg-background px-5 pt-section-10 pb-section-gap text-foreground md:px-8 md:pt-section-12">
+      <div className="mx-auto w-full max-w-page space-y-section-gap">
         <header className="space-y-2">
           <h1 className="text-2xl font-bold text-primary md:text-3xl">나의 와인</h1>
           <p className="text-sm text-muted-foreground md:text-base">

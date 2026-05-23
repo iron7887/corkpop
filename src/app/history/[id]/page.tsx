@@ -73,7 +73,7 @@ export default function RecommendationDetailPage() {
   }, [detail?.score_snapshot?.situations]);
 
   return (
-    <main className="min-h-screen bg-background px-5 py-section-10 text-foreground md:px-8">
+    <main className="min-h-screen bg-background px-5 pt-section-10 pb-section-gap text-foreground md:px-8">
       <section className="mx-auto w-full max-w-page rounded-3xl border border-primary/20 bg-card p-6 shadow-sm md:p-8">
         <div className="mb-6 flex items-center justify-between">
           <Link href="/" className="text-sm font-semibold text-primary hover:text-primary">

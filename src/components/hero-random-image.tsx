@@ -5,12 +5,16 @@ import { useEffect, useState } from 'react';
 
 const HERO_IMAGES = [
   {
-    src: '/myimg/land-main.png',
-    alt: '드론으로 내려다본 광활한 포도밭 전경',
+    src: '/myimg/hero-main-01.png',
+    alt: '코르크팝 히어로 이미지 1',
   },
   {
-    src: '/myimg/hero-img-2.png',
-    alt: '와인과 포도밭을 담은 코르크팝 히어로 이미지',
+    src: '/myimg/hero-main-02.png',
+    alt: '코르크팝 히어로 이미지 2',
+  },
+  {
+    src: '/myimg/hero-main-03.png',
+    alt: '코르크팝 히어로 이미지 3',
   },
 ] as const;
 

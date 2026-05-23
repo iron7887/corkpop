@@ -119,7 +119,7 @@ export default function HistoryPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-5 py-section-12 text-foreground md:px-8">
+    <main className="min-h-screen bg-background px-5 pt-section-12 pb-section-gap text-foreground md:px-8">
       <section className="mx-auto w-full max-w-page rounded-3xl border border-primary/20 bg-card p-6 shadow-sm md:p-8">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-primary">이전 추천기록 전체보기</h1>
