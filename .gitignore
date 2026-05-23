@@ -141,3 +141,19 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# macOS
+.DS_Store
+
+# Cursor / VSCode
+.vscode/
+
+# local env
+.env.local
+
+# Vercel
+.vercel
+
+# temporary files
+*.swp
+*.swo
