@@ -3,20 +3,17 @@ import { z } from 'zod';
 
 const userIdSchema = z.string().uuid();
 
-export const resolveRecommendationUserId = async (anonId: string | null) => {
+export const resolveRecommendationUserId = async () => {
   const session = await getAuthSession();
 
-  if (session?.user?.id) {
-    const parsedSessionId = userIdSchema.safeParse(session.user.id);
-    if (parsedSessionId.success) {
-      return { userId: parsedSessionId.data, source: 'session' as const };
-    }
+  if (!session?.user?.id) {
+    return { error: 'unauthorized' as const };
   }
 
-  const parsedAnonId = userIdSchema.safeParse(anonId);
-  if (!parsedAnonId.success) {
-    return { error: 'anonId is required' as const };
+  const parsedSessionId = userIdSchema.safeParse(session.user.id);
+  if (!parsedSessionId.success) {
+    return { error: 'unauthorized' as const };
   }
 
-  return { userId: parsedAnonId.data, source: 'anon' as const };
+  return { userId: parsedSessionId.data };
 };

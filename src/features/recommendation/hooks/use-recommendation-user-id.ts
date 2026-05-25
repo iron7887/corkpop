@@ -1,6 +1,5 @@
 'use client';
 
-import { getOrCreateAnonUserId } from '@/lib/anon-user';
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 
@@ -12,7 +11,7 @@ export const useRecommendationUserKey = () => {
       return `session:${session.user.id}`;
     }
 
-    return `anon:${getOrCreateAnonUserId()}`;
+    return null;
   }, [session?.user?.id, status]);
 };
 

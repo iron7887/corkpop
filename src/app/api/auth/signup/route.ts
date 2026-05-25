@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: firstIssue }, { status: 400 });
   }
 
-  const { email, nickname, password, anonId } = parsed.data;
+  const { email, nickname, password } = parsed.data;
   const supabase = await createPureClient();
 
   const { data: isEmailAvailable, error: emailError } = await supabase.rpc(
@@ -112,7 +112,6 @@ export async function POST(request: Request) {
     options: {
       data: {
         nickname,
-        ...(anonId ? { anon_id: anonId } : {}),
       },
       emailRedirectTo,
     },

@@ -6,18 +6,17 @@ import { getRecommendationCardBackgroundUrl } from '@/constants/wine-recommendat
 import { formatRankedGrapesSummary } from '@/features/survey/lib/grape-catalog';
 import {
   buildRecommendationItemUrl,
-  buildRecommendationsListUrl,
+  RECOMMENDATIONS_LIST_URL,
 } from '@/features/recommendation/lib/recommendation-api';
 import {
   useRecommendationDisplayName,
   useRecommendationUserKey,
 } from '@/features/recommendation/hooks/use-recommendation-user-id';
-import { getOrCreateAnonUserId } from '@/lib/anon-user';
-import { formatRetentionLabel } from '@/lib/recommendation-history';
 import { motion } from 'framer-motion';
 import { Sparkles, Wine, Grape } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 
 type HistoryItem = {
@@ -61,8 +60,15 @@ export default function Home() {
   const [isHistoryLoading, setIsHistoryLoading] = useState(true);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
   const [isHeroVisible, setIsHeroVisible] = useState(false);
+  const { status: sessionStatus } = useSession();
   const recommendationUserKey = useRecommendationUserKey();
   const sessionDisplayName = useRecommendationDisplayName();
+  const isSessionReady = sessionStatus !== 'loading';
+  const isAuthenticated = sessionStatus === 'authenticated';
+  const showDiscoverEmptyState =
+    isSessionReady && !isAuthenticated && !isHistoryLoading && history.length === 0;
+  const showHistorySectionLoading =
+    sessionStatus === 'loading' || (isAuthenticated && isHistoryLoading);
 
   useEffect(() => {
     if (pathname !== '/') {
@@ -80,12 +86,25 @@ export default function Home() {
   }, [pathname]);
 
   useEffect(() => {
+    if (sessionStatus === 'loading') {
+      setIsHistoryLoading(true);
+      return;
+    }
+
+    if (!isAuthenticated || !recommendationUserKey) {
+      setHistory([]);
+      setUsername(sessionDisplayName ?? null);
+      setIsHistoryLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
     const fetchHistory = async () => {
       setIsHistoryLoading(true);
 
       try {
-        const anonId = getOrCreateAnonUserId();
-        const response = await fetch(buildRecommendationsListUrl(anonId), {
+        const response = await fetch(RECOMMENDATIONS_LIST_URL, {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -93,18 +112,32 @@ export default function Home() {
         }
 
         const payload = (await response.json()) as { data?: HistoryItem[]; username?: string | null };
+        if (cancelled) {
+          return;
+        }
+
         setHistory(payload.data ?? []);
         setUsername(sessionDisplayName ?? payload.username ?? null);
       } catch {
+        if (cancelled) {
+          return;
+        }
+
         setHistory([]);
         setUsername(sessionDisplayName ?? null);
       } finally {
-        setIsHistoryLoading(false);
+        if (!cancelled) {
+          setIsHistoryLoading(false);
+        }
       }
     };
 
     void fetchHistory();
-  }, [recommendationUserKey, sessionDisplayName]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, recommendationUserKey, sessionDisplayName, sessionStatus]);
 
   const handleDeleteItem = async (id: string) => {
     if (deletingItemId) {
@@ -119,8 +152,7 @@ export default function Home() {
     setDeletingItemId(id);
 
     try {
-      const anonId = getOrCreateAnonUserId();
-      const response = await fetch(buildRecommendationItemUrl(id, anonId), {
+      const response = await fetch(buildRecommendationItemUrl(id), {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -168,12 +200,12 @@ export default function Home() {
       <section className="mx-auto w-full max-w-page px-5 pb-section-gap md:px-8">
         <div
           className={
-            !isHistoryLoading && history.length === 0
+            showDiscoverEmptyState
               ? 'overflow-hidden rounded-2xl border border-border bg-card shadow-sm'
               : 'rounded-2xl border border-border bg-card p-5 shadow-sm md:p-6'
           }
         >
-          {(isHistoryLoading || history.length > 0) && (
+          {!showDiscoverEmptyState && (
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-primary">이전 추천 기록</h2>
               {history.length > HOME_HISTORY_PREVIEW_COUNT && (
@@ -196,8 +228,10 @@ export default function Home() {
               )}
             </div>
           )}
-          {isHistoryLoading && <p className="text-sm text-muted-foreground">기록을 불러오는 중입니다...</p>}
-          {!isHistoryLoading && history.length === 0 && (
+          {showHistorySectionLoading && (
+            <p className="text-sm text-muted-foreground">기록을 불러오는 중입니다...</p>
+          )}
+          {showDiscoverEmptyState && (
             <div className="relative w-full">
               <img
                 src={HOME_HISTORY_EMPTY_DISCOVER_IMAGE.src}
@@ -218,7 +252,7 @@ export default function Home() {
               />
             </div>
           )}
-          {!isHistoryLoading && history.length > 0 && (
+          {isAuthenticated && !isHistoryLoading && history.length > 0 && (
             <>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-3">
                 {Array.from({ length: HOME_HISTORY_PREVIEW_COUNT }, (_, index) => {
@@ -252,9 +286,6 @@ export default function Home() {
                             )}
                             <p className="relative z-10 mt-2 text-left text-[11px] text-foreground sm:text-xs">
                               저장일: {new Date(item.created_at).toLocaleDateString('ko-KR')}
-                            </p>
-                            <p className="relative z-10 mt-1 text-left text-[11px] text-muted-foreground sm:text-xs">
-                              {formatRetentionLabel(item.created_at)}
                             </p>
                           </Link>
                           <div className="relative z-10 mt-3 flex w-full justify-end">

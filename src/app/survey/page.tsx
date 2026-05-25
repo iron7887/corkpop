@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { RECOMMENDATION_HISTORY_RETENTION_DAYS } from '@/constants/recommendation-history';
 import {
   EXPECTATION_QUESTIONS,
   EXPERIENCE_QUESTIONS,
@@ -24,18 +23,27 @@ import {
   computeRecommendation,
   type FullSurveyAnswers,
 } from '@/features/survey/lib/compute-recommendation';
-import {
-  buildRecommendationsListUrl,
-} from '@/features/recommendation/lib/recommendation-api';
+import { authEntryButtonClass } from '@/features/auth/constants/auth-button-styles';
+import { RECOMMENDATIONS_LIST_URL } from '@/features/recommendation/lib/recommendation-api';
 import {
   useRecommendationDisplayName,
   useRecommendationUserKey,
 } from '@/features/recommendation/hooks/use-recommendation-user-id';
-import { getOrCreateAnonUserId } from '@/lib/anon-user';
+import { SaveSurveyConfirmAlert } from '@/features/survey/components/save-survey-confirm-alert';
+import { buildSurveyLoginHref } from '@/features/survey/constants/survey-auth-flow';
+import {
+  clearPendingSurveySaveIntentFromUrl,
+  clearPendingSurveySnapshot,
+  hasPendingSurveySaveIntent,
+  loadPendingSurveySnapshot,
+  savePendingSurveySnapshot,
+  type PendingSurveySnapshot,
+} from '@/features/survey/lib/pending-survey-storage';
 import { cn } from '@/lib/utils';
 import type { Part2Screen } from '@/features/survey/types/part2-screen';
 import Link from 'next/link';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { match } from 'ts-pattern';
 
 const STEP1_TOTAL = 3;
@@ -59,9 +67,13 @@ export default function SurveyPage() {
 
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [saveMessage, setSaveMessage] = useState('');
+  const [saveConfirmOpen, setSaveConfirmOpen] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
+  const [hasRestoredPendingSurvey, setHasRestoredPendingSurvey] = useState(false);
+  const pendingSavePromptedRef = useRef(false);
   const recommendationUserKey = useRecommendationUserKey();
   const sessionDisplayName = useRecommendationDisplayName();
+  const { status: sessionStatus } = useSession();
 
   const fullAnswers: FullSurveyAnswers = useMemo(
     () => ({
@@ -83,19 +95,14 @@ export default function SurveyPage() {
   }, [phase, fullAnswers]);
 
   useEffect(() => {
-    if (phase !== 'result') {
-      return;
-    }
-
-    const anonId = getOrCreateAnonUserId();
-    if (!anonId) {
+    if (phase !== 'result' || !recommendationUserKey) {
       return;
     }
 
     let cancelled = false;
     const fetchUsername = async () => {
       try {
-        const response = await fetch(buildRecommendationsListUrl(anonId), {
+        const response = await fetch(RECOMMENDATIONS_LIST_URL, {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -115,6 +122,85 @@ export default function SurveyPage() {
       cancelled = true;
     };
   }, [phase, recommendationUserKey, sessionDisplayName]);
+
+  const pendingSurveySnapshot = useMemo<PendingSurveySnapshot>(
+    () => ({
+      q1Id,
+      q2Id,
+      q3Ids,
+      experience,
+      expectationGeneral,
+      foods,
+      part2Screens,
+    }),
+    [q1Id, q2Id, q3Ids, experience, expectationGeneral, foods, part2Screens],
+  );
+
+  const applyPendingSurveySnapshot = useCallback((snapshot: PendingSurveySnapshot) => {
+    setQ1Id(snapshot.q1Id);
+    setQ2Id(snapshot.q2Id);
+    setQ3Ids(snapshot.q3Ids);
+    setExperience(snapshot.experience);
+    setExpectationGeneral(snapshot.expectationGeneral);
+    setFoods(snapshot.foods);
+    setPart2Screens(snapshot.part2Screens);
+    setPart2Index(Math.max(snapshot.part2Screens.length - 1, 0));
+    setPhase('result');
+    setSaveState('idle');
+    setSaveMessage('');
+  }, []);
+
+  useEffect(() => {
+    if (hasRestoredPendingSurvey) {
+      return;
+    }
+
+    if (!hasPendingSurveySaveIntent()) {
+      setHasRestoredPendingSurvey(true);
+      return;
+    }
+
+    const snapshot = loadPendingSurveySnapshot();
+    if (snapshot) {
+      applyPendingSurveySnapshot(snapshot);
+    }
+
+    setHasRestoredPendingSurvey(true);
+  }, [applyPendingSurveySnapshot, hasRestoredPendingSurvey]);
+
+  useEffect(() => {
+    if (phase !== 'result') {
+      return;
+    }
+
+    savePendingSurveySnapshot(pendingSurveySnapshot);
+  }, [phase, pendingSurveySnapshot]);
+
+  const saveAccountLabel = username?.trim() || sessionDisplayName?.trim() || '회원';
+
+  useEffect(() => {
+    if (
+      phase !== 'result' ||
+      sessionStatus !== 'authenticated' ||
+      !recommendationUserKey ||
+      !recommendation ||
+      saveState === 'saved' ||
+      pendingSavePromptedRef.current ||
+      !hasPendingSurveySaveIntent()
+    ) {
+      return;
+    }
+
+    pendingSavePromptedRef.current = true;
+    clearPendingSurveySaveIntentFromUrl();
+    setSaveConfirmOpen(true);
+  }, [
+    phase,
+    sessionStatus,
+    recommendationUserKey,
+    recommendation,
+    saveState,
+  ]);
 
   const totalSurveySteps = STEP1_TOTAL + part2Screens.length;
   const activeStepIndex =
@@ -217,11 +303,22 @@ export default function SurveyPage() {
     setPart2Index(0);
     setSaveState('idle');
     setSaveMessage('');
+    setSaveConfirmOpen(false);
     setUsername(null);
+    pendingSavePromptedRef.current = false;
+    clearPendingSurveySnapshot();
+  };
+
+  const handleOpenSaveConfirm = () => {
+    if (!recommendation || !recommendationUserKey || saveState === 'saved') {
+      return;
+    }
+
+    setSaveConfirmOpen(true);
   };
 
   const handleSaveResult = async () => {
-    if (!recommendation) {
+    if (!recommendation || !recommendationUserKey) {
       return;
     }
 
@@ -229,7 +326,6 @@ export default function SurveyPage() {
       setSaveState('saving');
       setSaveMessage('');
 
-      const anonId = getOrCreateAnonUserId();
       const response = await fetch('/api/recommendations', {
         method: 'POST',
         headers: {
@@ -237,7 +333,6 @@ export default function SurveyPage() {
         },
         credentials: 'include',
         body: JSON.stringify({
-          anonId,
           category: recommendation.categoryLabel,
           sweetness: recommendation.sweetnessLabel,
           primaryGrape: recommendation.primaryGrape.nameKo,
@@ -260,6 +355,8 @@ export default function SurveyPage() {
 
       setSaveState('saved');
       setSaveMessage('결과가 저장되었습니다. 랜딩에서 이전 기록을 확인할 수 있어요.');
+      setSaveConfirmOpen(false);
+      clearPendingSurveySnapshot();
     } catch {
       setSaveState('error');
       setSaveMessage('결과 저장 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
@@ -651,9 +748,6 @@ export default function SurveyPage() {
               <p className="inline-flex rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-primary">
                 STEP 5 · 추천 결과
               </p>
-              <p className="text-xs text-muted-foreground">
-                현재 추천결과는 {RECOMMENDATION_HISTORY_RETENTION_DAYS}일간 저장 후 삭제됩니다.
-              </p>
             </div>
 
             <div>
@@ -755,13 +849,23 @@ export default function SurveyPage() {
             </article>
 
             <div className="flex flex-wrap gap-3">
-              <Button
-                onClick={handleSaveResult}
-                disabled={saveState === 'saving' || saveState === 'saved'}
-                className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90 disabled:bg-primary/50"
-              >
-                {saveState === 'saving' ? '저장 중...' : saveState === 'saved' ? '저장 완료' : '결과 저장하기'}
-              </Button>
+              {recommendationUserKey ? (
+                <Button
+                  onClick={handleOpenSaveConfirm}
+                  disabled={saveState === 'saving' || saveState === 'saved'}
+                  className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90 disabled:bg-primary/50"
+                >
+                  {saveState === 'saving'
+                    ? '저장 중...'
+                    : saveState === 'saved'
+                      ? '저장 완료'
+                      : '결과 저장하기'}
+                </Button>
+              ) : (
+                <Button asChild variant="outline" size="sm" className={authEntryButtonClass}>
+                  <Link href={buildSurveyLoginHref()}>로그인 후 저장</Link>
+                </Button>
+              )}
               <Button onClick={handleReset} className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
                 설문 다시하기
               </Button>
@@ -782,6 +886,15 @@ export default function SurveyPage() {
           </div>
         )}
       </section>
+      <SaveSurveyConfirmAlert
+        open={saveConfirmOpen}
+        accountLabel={saveAccountLabel}
+        isSaving={saveState === 'saving'}
+        onOpenChange={setSaveConfirmOpen}
+        onConfirm={() => {
+          void handleSaveResult();
+        }}
+      />
     </main>
   );
 }

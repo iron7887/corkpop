@@ -5,11 +5,9 @@ import { getRecommendationCardBackgroundUrl } from '@/constants/wine-recommendat
 import { formatRankedGrapesSummary } from '@/features/survey/lib/grape-catalog';
 import {
   buildRecommendationItemUrl,
-  buildRecommendationsListUrl,
+  RECOMMENDATIONS_LIST_URL,
 } from '@/features/recommendation/lib/recommendation-api';
 import { useRecommendationUserKey } from '@/features/recommendation/hooks/use-recommendation-user-id';
-import { getOrCreateAnonUserId } from '@/lib/anon-user';
-import { formatRetentionLabel } from '@/lib/recommendation-history';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
@@ -31,12 +29,17 @@ export default function HistoryPage() {
   const recommendationUserKey = useRecommendationUserKey();
 
   useEffect(() => {
+    if (!recommendationUserKey) {
+      setHistory([]);
+      setIsLoading(false);
+      return;
+    }
+
     const fetchHistory = async () => {
       setIsLoading(true);
 
       try {
-        const anonId = getOrCreateAnonUserId();
-        const response = await fetch(buildRecommendationsListUrl(anonId), {
+        const response = await fetch(RECOMMENDATIONS_LIST_URL, {
           credentials: 'include',
         });
 
@@ -69,8 +72,7 @@ export default function HistoryPage() {
     setDeletingItemId(id);
 
     try {
-      const anonId = getOrCreateAnonUserId();
-      const response = await fetch(buildRecommendationItemUrl(id, anonId), {
+      const response = await fetch(buildRecommendationItemUrl(id), {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -100,8 +102,7 @@ export default function HistoryPage() {
     setIsDeletingAll(true);
 
     try {
-      const anonId = getOrCreateAnonUserId();
-      const response = await fetch(buildRecommendationsListUrl(anonId), {
+      const response = await fetch(RECOMMENDATIONS_LIST_URL, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -171,9 +172,6 @@ export default function HistoryPage() {
                   )}
                   <p className="mt-3 text-xs text-foreground">
                     저장일: {new Date(item.created_at).toLocaleDateString('ko-KR')}
-                  </p>
-                  <p className="mt-1 text-xs text-foreground">
-                    {formatRetentionLabel(item.created_at)}
                   </p>
                 </Link>
                 <div className="mt-3 flex justify-end">

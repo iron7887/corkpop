@@ -14,8 +14,6 @@ import {
   loginSchema,
   type LoginFormValues,
 } from '@/features/auth/constants/login-schema';
-import { mergeGuestHistoryOnAuth } from '@/features/recommendation/lib/recommendation-api';
-import { clearAnonUserId, getAnonUserId } from '@/lib/anon-user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
@@ -33,6 +31,10 @@ export function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const callbackUrl = searchParams.get('callbackUrl') ?? DEFAULT_CALLBACK_URL;
+  const signupHref =
+    callbackUrl === DEFAULT_CALLBACK_URL
+      ? '/signup'
+      : `/signup?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -55,14 +57,6 @@ export function LoginForm() {
       });
 
       if (result?.ok) {
-        const anonId = getAnonUserId();
-        if (anonId) {
-          const merged = await mergeGuestHistoryOnAuth(anonId);
-          if (merged) {
-            clearAnonUserId();
-          }
-        }
-
         router.push(callbackUrl);
         router.refresh();
         return;
@@ -149,7 +143,7 @@ export function LoginForm() {
         <p className="text-center text-sm text-muted-foreground">
           아직 계정이 없으신가요?{' '}
           <Link
-            href="/signup"
+            href={signupHref}
             className="font-semibold text-primary underline-offset-4 hover:underline"
           >
             회원가입

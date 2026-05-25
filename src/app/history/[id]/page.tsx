@@ -8,7 +8,6 @@ import {
 } from '@/features/survey/lib/grape-catalog';
 import { buildRecommendationItemUrl } from '@/features/recommendation/lib/recommendation-api';
 import { useRecommendationUserKey } from '@/features/recommendation/hooks/use-recommendation-user-id';
-import { getOrCreateAnonUserId } from '@/lib/anon-user';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -40,13 +39,19 @@ export default function RecommendationDetailPage() {
   const recommendationUserKey = useRecommendationUserKey();
 
   useEffect(() => {
+    if (!recommendationUserKey) {
+      setDetail(null);
+      setErrorMessage('로그인 후 저장된 추천 결과를 확인할 수 있습니다.');
+      setIsLoading(false);
+      return;
+    }
+
     const fetchDetail = async () => {
       try {
         setIsLoading(true);
         setErrorMessage('');
 
-        const anonId = getOrCreateAnonUserId();
-        const response = await fetch(buildRecommendationItemUrl(params.id, anonId), {
+        const response = await fetch(buildRecommendationItemUrl(params.id), {
           credentials: 'include',
         });
         if (!response.ok) {

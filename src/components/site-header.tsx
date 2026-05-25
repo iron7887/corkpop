@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { authEntryButtonClass } from '@/features/auth/constants/auth-button-styles';
 import { LogoutSuccessAlert } from '@/features/auth/components/logout-success-alert';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -9,9 +10,6 @@ import React, { useState } from 'react';
 
 const navLinkClass =
   'text-sm font-semibold text-muted-foreground transition-colors hover:text-primary';
-
-const authEntryButtonClass =
-  'h-9 rounded-full border-2 border-primary/40 bg-card px-3 text-xs font-semibold text-primary shadow-none transition-colors hover:border-primary hover:bg-accent hover:text-primary sm:px-4 sm:text-sm';
 
 const authMenuClass =
   'flex h-9 items-stretch overflow-hidden rounded-full border-2 border-primary/40 bg-card text-xs font-semibold shadow-none sm:text-sm';

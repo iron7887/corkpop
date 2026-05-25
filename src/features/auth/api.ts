@@ -40,10 +40,7 @@ export const checkEmailAvailability = async (email: string) => {
   return (await response.json()) as AvailabilityResponse;
 };
 
-export const signUpWithEmail = async (
-  payload: SignupFormValues,
-  options?: { anonId?: string },
-) => {
+export const signUpWithEmail = async (payload: SignupFormValues) => {
   const response = await fetch('/api/auth/signup', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -51,7 +48,6 @@ export const signUpWithEmail = async (
       email: payload.email,
       nickname: payload.nickname,
       password: payload.password,
-      ...(options?.anonId ? { anonId: options.anonId } : {}),
     }),
   });
 

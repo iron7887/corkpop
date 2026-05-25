@@ -26,15 +26,11 @@ const signupFieldsSchema = z.object({
   confirmPassword: z.string().min(1, '비밀번호 확인을 입력해 주세요.'),
 });
 
-export const apiSignupSchema = signupFieldsSchema
-  .pick({
-    email: true,
-    nickname: true,
-    password: true,
-  })
-  .extend({
-    anonId: z.string().uuid().optional(),
-  });
+export const apiSignupSchema = signupFieldsSchema.pick({
+  email: true,
+  nickname: true,
+  password: true,
+});
 
 export const signupSchema = signupFieldsSchema.refine(
   (values) => values.password === values.confirmPassword,

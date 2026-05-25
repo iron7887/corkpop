@@ -24,11 +24,10 @@ import {
   isNicknameReadyForSubmit,
   useNicknameAvailability,
 } from '@/features/auth/hooks/use-nickname-availability';
-import { getOrCreateAnonUserId } from '@/lib/anon-user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDebounce } from 'react-use';
@@ -71,8 +70,16 @@ const availabilityHelperClassName = (status: AvailabilityStatus) => {
   return 'text-muted-foreground';
 };
 
+const DEFAULT_CALLBACK_URL = '/';
+
 export function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') ?? DEFAULT_CALLBACK_URL;
+  const loginHref =
+    callbackUrl === DEFAULT_CALLBACK_URL
+      ? '/login'
+      : `/login?callbackUrl=${encodeURIComponent(callbackUrl)}`;
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [debouncedEmail, setDebouncedEmail] = useState('');
@@ -134,8 +141,7 @@ export function SignupForm() {
     setIsSubmitting(true);
 
     try {
-      const anonId = getOrCreateAnonUserId();
-      await signUpWithEmail(values, { anonId });
+      await signUpWithEmail(values);
       router.push(`/signup/complete?email=${encodeURIComponent(values.email)}`);
     } catch (error) {
       const message =
@@ -265,7 +271,7 @@ export function SignupForm() {
         <p className="text-center text-sm text-muted-foreground">
           이미 계정이 있으신가요?{' '}
           <Link
-            href="/login"
+            href={loginHref}
             className="font-semibold text-primary underline-offset-4 hover:underline"
           >
             로그인
