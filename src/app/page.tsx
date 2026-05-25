@@ -32,6 +32,13 @@ type HistoryItem = {
 };
 
 const HOME_HISTORY_PREVIEW_COUNT = 5;
+const HOME_HISTORY_EMPTY_DISCOVER_IMAGE = {
+  src: '/myimg/discover-01.png',
+  alt: '와인 추천을 시작해 보세요',
+  width: 1400,
+  height: 300,
+} as const;
+const HOME_HISTORY_EMPTY_DISCOVER_LOGIN_HOTSPOT_SIZE_PX = 180;
 
 const sectionFadeIn = {
   hidden: { opacity: 0, y: 24 },
@@ -159,20 +166,28 @@ export default function Home() {
       </section>
 
       <section className="mx-auto w-full max-w-page px-5 pb-section-gap md:px-8">
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm md:p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-primary">이전 추천 기록</h2>
-            {history.length > HOME_HISTORY_PREVIEW_COUNT && (
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="rounded-full border-primary/30 bg-card text-primary hover:bg-accent"
-              >
-                <Link href="/history">이전 추천기록 모두보기</Link>
-              </Button>
-            )}
-          </div>
+        <div
+          className={
+            !isHistoryLoading && history.length === 0
+              ? 'overflow-hidden rounded-2xl border border-border bg-card shadow-sm'
+              : 'rounded-2xl border border-border bg-card p-5 shadow-sm md:p-6'
+          }
+        >
+          {(isHistoryLoading || history.length > 0) && (
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-primary">이전 추천 기록</h2>
+              {history.length > HOME_HISTORY_PREVIEW_COUNT && (
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full border-primary/30 bg-card text-primary hover:bg-accent"
+                >
+                  <Link href="/history">이전 추천기록 모두보기</Link>
+                </Button>
+              )}
+            </div>
+          )}
           {(username || history.length >= HOME_HISTORY_PREVIEW_COUNT) && (
             <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-foreground">
               {username && <p>{username}님</p>}
@@ -182,7 +197,28 @@ export default function Home() {
             </div>
           )}
           {isHistoryLoading && <p className="text-sm text-muted-foreground">기록을 불러오는 중입니다...</p>}
-          {!isHistoryLoading && (
+          {!isHistoryLoading && history.length === 0 && (
+            <div className="relative w-full">
+              <img
+                src={HOME_HISTORY_EMPTY_DISCOVER_IMAGE.src}
+                alt={HOME_HISTORY_EMPTY_DISCOVER_IMAGE.alt}
+                width={HOME_HISTORY_EMPTY_DISCOVER_IMAGE.width}
+                height={HOME_HISTORY_EMPTY_DISCOVER_IMAGE.height}
+                className="block h-auto w-full"
+                draggable={false}
+              />
+              <Link
+                href="/login"
+                aria-label="로그인 페이지로 이동"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                style={{
+                  width: `${HOME_HISTORY_EMPTY_DISCOVER_LOGIN_HOTSPOT_SIZE_PX}px`,
+                  height: `${HOME_HISTORY_EMPTY_DISCOVER_LOGIN_HOTSPOT_SIZE_PX}px`,
+                }}
+              />
+            </div>
+          )}
+          {!isHistoryLoading && history.length > 0 && (
             <>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-3">
                 {Array.from({ length: HOME_HISTORY_PREVIEW_COUNT }, (_, index) => {
@@ -241,7 +277,9 @@ export default function Home() {
                         className="flex h-full min-h-[13rem] flex-col items-start justify-start rounded-xl border border-dashed border-border bg-muted/90 p-3 text-left sm:p-4 lg:min-h-[15rem] lg:p-4"
                         role="presentation"
                       >
-                        <p className="text-left text-xs font-medium text-muted-foreground/70 sm:text-sm">저장기록이 없습니다.</p>
+                        <p className="text-left text-xs font-medium text-muted-foreground/70 sm:text-sm">
+                          저장기록이 없습니다.
+                        </p>
                       </div>
                     </div>
                   );
